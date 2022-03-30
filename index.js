@@ -30,11 +30,22 @@ const http = require('http');
 ///////////////////////////////////////////////////////////////////
 //SERVER
 
+const apiData = fs.readFileSync(`${__dirname}/dev-data/data.json`);
+const productData = JSON.parse(apiData);
+
 const server = http.createServer((req, res) => {
     // console.log(req);
     const pathName = req.url;
-    if (pathName === '/' || pathName === '/overview') res.end("This is an OVERVIEW page.");
-    else if (pathName === '/category') res.end("This is an CATEGORY page.");
+    if (pathName === '/' || pathName === '/overview')
+        res.end("This is an OVERVIEW page.");
+    else if (pathName === '/category')
+        res.end("This is an CATEGORY page.");
+    else if (pathName == '/api') {
+        res.writeHead(200, {
+            'Content-type': 'application/json'
+        });
+        res.end(apiData);
+    }
     else {
         res.writeHead(404, {
             'Content-type': 'text/html',

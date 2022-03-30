@@ -2,8 +2,24 @@ const fs = require('fs');
 
 
 //Blocking, synchronous way
-const textIn = fs.readFileSync('./txt/input.txt', 'utf-8');
-console.log(textIn);
-const textOut = `The content of input.txt file is : ${textIn}\n Created on ${Date.now()}`;
-fs.writeFileSync('./txt/output.txt', textOut);
-console.log("File written!");
+// const textIn = fs.readFileSync('./txt/input.txt', 'utf-8');
+// console.log(textIn);
+// const textOut = `The content of input.txt file is : ${textIn}\n Created on ${Date.now()}`;
+// fs.writeFileSync('./txt/output.txt', textOut);
+// console.log("File written!");
+
+
+//Non-Blocking, Asynchronous way
+fs.readFile('./txt/start.txt', 'utf-8', (err1, data) => {
+    if (err1) return console.log("Unable to read start.txt file");
+    fs.readFile(`./txt/${data}.txt`, 'utf-8', (err2, data2) => {
+        if (err2) return console.log(`Unable to read ${data2}.txt file`);
+        fs.readFile('./txt/append.txt', 'utf-8', (err3, data3) => {
+            if (err3) return console.log(`Unable to read append.txt file`);
+            fs.writeFile('./txt/final.txt', `Content of final file is : ${data2} \n ${data3}`, 'utf-8', (err) => {
+                if (err) throw err;
+                console.log("file written successFully!");
+            });
+        });
+    });
+});

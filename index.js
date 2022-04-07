@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+const slugify = require('slugify');
 const replaceTemplate = require('./modules/replaceTemplate');
 
 ////////////////////////////////////////////////////////////
@@ -37,11 +38,16 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`).toString();
 const apiData = fs.readFileSync(`${__dirname}/dev-data/data.json`);
 const productData = JSON.parse(apiData);
+
+//Just to see implementation of slugify
+// const temp = productData.map(el => slugify(el.productName, { replacement: '-', lower: true, trim: true }));
+// console.log(temp);
+
 const server = http.createServer((req, res) => {
     const { query, pathname } = url.parse(req.url, true);
     //OVERVIEW PAGE
     if (pathname === '/' || pathname === '/overview') {
-        res.writeHead(200, { 'Content-type': 'text/html' });
+        res.writeHead(200, { 'Content-type': "text/html" });
         const cardhtmlList = productData.map(el => replaceTemplate(tempCard, el)).join('');
         const output = tempOverview.replace(/{%PRODUCT_CARD%}/g, cardhtmlList);
         res.end(output);

@@ -20,8 +20,7 @@ Some of the standout features of the project are:
 
 ## ScreenShots
 
-<img src="/screenshots/Screenshot1.png" width="420"/></br>
-<img src="/screenshots/Screenshot2.png" width="420"/>
+<center><img src="/screenshots/Screenshot1.png" width="700"/></center></br><center><img src="/screenshots/Screenshot2.png" width="700"/></center>
 
 ## To run this project :
 
@@ -73,9 +72,6 @@ Contributions are what make the open source community such an amazing place to b
 - [Udemy](https://www.udemy.com)
 - [Jonas Schmedtmann](https://www.udemy.com/user/jonasschmedtmann/)
 
-## License ✅
-
-[MIT](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
 ## Authors 👨‍💻
 

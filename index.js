@@ -14,7 +14,6 @@ const replaceTemplate = require('./modules/replaceTemplate');
 // fs.writeFileSync('./txt/output.txt', textOut);
 // console.log("File written!");
 
-
 //Non-Blocking, Asynchronous way
 // fs.readFile('./txt/start.txt', 'utf-8', (err1, data) => {
 //     if (err1) return console.log("Unable to read start.txt file");
@@ -33,9 +32,15 @@ const replaceTemplate = require('./modules/replaceTemplate');
 ///////////////////////////////////////////////////////////////////
 //SERVER
 
-const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`).toString();
-const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`).toString();
-const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`).toString();
+const tempOverview = fs
+  .readFileSync(`${__dirname}/templates/template-overview.html`)
+  .toString();
+const tempProduct = fs
+  .readFileSync(`${__dirname}/templates/template-product.html`)
+  .toString();
+const tempCard = fs
+  .readFileSync(`${__dirname}/templates/template-card.html`)
+  .toString();
 const apiData = fs.readFileSync(`${__dirname}/dev-data/data.json`);
 const productData = JSON.parse(apiData);
 
@@ -44,36 +49,38 @@ const productData = JSON.parse(apiData);
 // console.log(temp);
 
 const server = http.createServer((req, res) => {
-    const { query, pathname } = url.parse(req.url, true);
-    //OVERVIEW PAGE
-    if (pathname === '/' || pathname === '/overview') {
-        res.writeHead(200, { 'Content-type': "text/html" });
-        const cardhtmlList = productData.map(el => replaceTemplate(tempCard, el)).join('');
-        const output = tempOverview.replace(/{%PRODUCT_CARD%}/g, cardhtmlList);
-        res.end(output);
-    }
-    //PRODUCT PAGE
-    else if (pathname === '/product') {
-        res.writeHead(200, { 'Content-type': 'text/html' });
-        const product = productData[query.id];
-        const output = replaceTemplate(tempProduct, product);
-        res.end(output);
-    }
-    //API  
-    else if (pathname == '/api') {
-        res.writeHead(200, { 'Content-type': 'application/json' });
-        res.end(apiData);
-    }
-    //NOT FOUND
-    else {
-        res.writeHead(404, {
-            'Content-type': 'text/html',
-            'my-own-header': 'hello-world'
-        });
-        res.end("<h1>Page NOT found :(</h1>");
-    }
+  const { query, pathname } = url.parse(req.url, true);
+  //OVERVIEW PAGE
+  if (pathname === '/' || pathname === '/overview') {
+    res.writeHead(200, { 'Content-type': 'text/html' });
+    const cardhtmlList = productData
+      .map((el) => replaceTemplate(tempCard, el))
+      .join('');
+    const output = tempOverview.replace(/{%PRODUCT_CARD%}/g, cardhtmlList);
+    res.end(output);
+  }
+  //PRODUCT PAGE
+  else if (pathname === '/product') {
+    res.writeHead(200, { 'Content-type': 'text/html' });
+    const product = productData[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    res.end(output);
+  }
+  //API
+  else if (pathname == '/api') {
+    res.writeHead(200, { 'Content-type': 'application/json' });
+    res.end(apiData);
+  }
+  //NOT FOUND
+  else {
+    res.writeHead(404, {
+      'Content-type': 'text/html',
+      'my-own-header': 'hello-world',
+    });
+    res.end('<h1>Page NOT found :(</h1>');
+  }
 });
 
-server.listen(8800, '127.0.0.2', () => {
-    console.log("listening to request on port 8800");
+server.listen(5000, '127.0.0.1', () => {
+  console.log('listening to request on port 5000');
 });
